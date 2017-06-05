@@ -1,4 +1,8 @@
 import csv
+import re
+from nltk.stem import WordNetLemmatizer
+from nltk.tokenize import word_tokenize
+from sklearn import feature_extraction
 
 class FeatureData():
     def __init__(self):
@@ -27,7 +31,10 @@ class FeatureData():
                 stances.append(row)
         return stances
 
-def main():
-    data_set = FeatureData()
+    @staticmethod
+    def preprocess_data(self, text):
+        text = " ".join(re.findall(r'w+', text, flags=re.UNICODE).lower())
+        text = [word for word in text if word not in feature_extraction.text.ENGLISH_STOP_WORDS]
+        wordnet_lemmatizer = WordNetLemmatizer()
+        return [wordnet_lemmatizer(token).lower() for token in word_tokenize(text)]
 
-main()
