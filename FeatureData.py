@@ -33,20 +33,19 @@ class FeatureData():
                 stances.append(row)
         return stances
 
-    @staticmethod
-    def preprocess_data(text):
-        text = " ".join(re.findall(r'w+', text, flags=re.UNICODE).lower())
-        text = [word for word in text if word not in feature_extraction.text.ENGLISH_STOP_WORDS]
-        wordnet_lemmatizer = WordNetLemmatizer()
-        return [wordnet_lemmatizer(token).lower() for token in word_tokenize(text)]
+def normalize_word(w):
+    wordnet_lemmatizer = WordNetLemmatizer()
+    return wordnet_lemmatizer(w).lower()
 
-    @staticmethod
-    def load_features(feature_func, headlines, bodies, feature_file):
-        if not os.path.isfile(feature_file):
-            features = feature_func(headlines, bodies)
-            np.save(feature_file, features)
+def clean(str):
+    return " ".join(re.findall(r'w+', string, flags=re.UNICODE).lower())
 
-        return np.load(feature_file)
+def get_tokenized_lemmas(str):
+    return [normalize_word(token) for token in word_tokenize(str)]
 
-fd = FeatureData('./train_bodies.csv', './train_stances.csv')
+def remove_stopwords(list_of_tokens):
+    return [word for word in list_of_tokens if word not in feature_extraction.text.ENGLISH_STOP_WORDS]
+
+if __name__ == '__main__':
+    fd = FeatureData('./train_bodies.csv', './train_stances.csv')
 
