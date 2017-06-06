@@ -34,8 +34,8 @@ class FeatureData():
         return stances
 
     @staticmethod
-    def preprocess_data(sentence):
-        text = " ".join(re.findall(r'w+', sentence, flags=re.UNICODE).lower())
+    def preprocess_data(text):
+        text = " ".join(re.findall(r'w+', text, flags=re.UNICODE).lower())
         text = [word for word in text if word not in feature_extraction.text.ENGLISH_STOP_WORDS]
         wordnet_lemmatizer = WordNetLemmatizer()
         return [wordnet_lemmatizer(token).lower() for token in word_tokenize(text)]
